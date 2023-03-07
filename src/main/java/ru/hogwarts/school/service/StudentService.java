@@ -7,6 +7,7 @@ import java.util.*;
 
 @Service
 public class StudentService {
+
     private final HashMap<Long, Student> students = new HashMap<>();
     private Long lastId = 0L;
     public Student addStudent(Student student){
