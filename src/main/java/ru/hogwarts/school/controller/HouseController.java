@@ -10,6 +10,7 @@ import java.util.Collection;
 @RestController
 @RequestMapping("faculty")
 public class HouseController {
+
     private final HouseService houseService;
 
     public HouseController( HouseService houseService ) {
