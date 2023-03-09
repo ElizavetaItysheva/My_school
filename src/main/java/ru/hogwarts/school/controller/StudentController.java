@@ -10,6 +10,7 @@ import java.util.Collection;
 @RestController
 @RequestMapping("student")
 public class StudentController {
+
     private final StudentService studentService;
 
     public StudentController( StudentService studentService ) {
@@ -38,14 +39,15 @@ public class StudentController {
     }
     @DeleteMapping("{id}")
     public ResponseEntity<Student> deleteStudent(@PathVariable Long id){
-        Student foundStudent = studentService.getStudentById(id);
-        if(foundStudent == null){
-            ResponseEntity.notFound().build();
-        }
-        return  ResponseEntity.ok(studentService.deleteStudent(id));
+        studentService.deleteStudent(id);
+        return ResponseEntity.ok().build();
     }
     @GetMapping
-    public ResponseEntity<Collection<Student>> getStudentsByAge( @RequestParam int age){
-        return ResponseEntity.ok(studentService.getStudentsByAge(age));
+    public ResponseEntity<Collection<Student>> getStudentsByAge( @RequestParam Long age){
+        Collection<Student> foundStudents = studentService.getStudentsByAge(age);
+        if(foundStudents == null){
+            ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(foundStudents);
     }
 }
