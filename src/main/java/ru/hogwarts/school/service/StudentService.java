@@ -1,39 +1,36 @@
 package ru.hogwarts.school.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.repositories.StudentRepository;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
 
-    private final HashMap<Long, Student> students = new HashMap<>();
-    private Long lastId = 0L;
+    private final StudentRepository studentRepository;
+
+    public StudentService( StudentRepository studentRepository ) {
+        this.studentRepository = studentRepository;
+    }
+
     public Student addStudent(Student student){
-        student.setId(++lastId);
-        students.put(lastId, student);
-        return student;
+        return studentRepository.save(student);
     }
     public Student getStudentById(Long id){
-        return  students.get(id);
+        return  studentRepository.findById(id).get();
     }
     public Student editStudent(Student student){
-        students.put(student.getId(), student);
-        return student;
+        return studentRepository.save(student);
     }
-    public Student deleteStudent(Long id){
-        return students.remove(id);
+    public void deleteStudent(Long id){
+        studentRepository.deleteById(id);
     }
-    public Collection<Student> getStudentsByAge(int age){
-        Collection<Student> temp = new ArrayList<>();
-        for (Map.Entry<Long, Student> studentEntry: students.entrySet()) {
-            if(studentEntry.getValue().getAge() == age){
-                temp.add(studentEntry.getValue());
-            }
-
-        }
-        return temp;
+    public Collection<Student> getStudentsByAge(Long age){
+        return studentRepository.findByAge(age);
     }
 
 }
