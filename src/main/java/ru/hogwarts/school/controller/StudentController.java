@@ -2,6 +2,8 @@ package ru.hogwarts.school.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.hogwarts.school.dto.FacultyDTO;
+import ru.hogwarts.school.dto.StudentDTO;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentService;
 
@@ -17,8 +19,8 @@ public class StudentController {
         this.studentService = studentService;
     }
     @GetMapping("{id}")
-    public ResponseEntity<Student> getStudentInfo( @PathVariable Long id ){
-        Student foundStudent = studentService.getStudentById(id);
+    public ResponseEntity<StudentDTO> getStudentInfo( @PathVariable Long id ){
+        StudentDTO foundStudent = studentService.getStudentById(id);
         if(foundStudent == null){
             ResponseEntity.notFound().build();
         }
@@ -26,12 +28,14 @@ public class StudentController {
     }
 
     @PostMapping
-    public Student addStudent(@RequestBody Student student){
-        return  studentService.addStudent(student);
+    public StudentDTO addStudent( @RequestBody StudentDTO student){
+        studentService.addStudent(student);
+
+        return student;
     }
     @PutMapping
-    public ResponseEntity<Student> editStudent(@RequestBody Student student){
-        Student foundStudent = studentService.editStudent(student);
+    public ResponseEntity<StudentDTO> editStudent(@RequestBody StudentDTO student){
+        StudentDTO foundStudent = studentService.editStudent(student);
         if(foundStudent == null){
             return ResponseEntity.notFound().build();
         }
@@ -42,12 +46,28 @@ public class StudentController {
         studentService.deleteStudent(id);
         return ResponseEntity.ok().build();
     }
-    @GetMapping
-    public ResponseEntity<Collection<Student>> getStudentsByAge( @RequestParam Long age){
-        Collection<Student> foundStudents = studentService.getStudentsByAge(age);
+    @GetMapping("{age}")
+    public ResponseEntity<Collection<StudentDTO>> getStudentsByAge( @PathVariable Long age){
+        Collection<StudentDTO> foundStudents = studentService.getStudentsByAge(age);
         if(foundStudents == null){
             ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(foundStudents);
+    }
+    @GetMapping
+    public  ResponseEntity<Collection<StudentDTO>> getStudentsByAgeBetween(@RequestParam Long start, Long end){
+        Collection<StudentDTO> foundStudents = studentService.getStudentsByAgeBetween(start, end);
+        if(foundStudents == null){
+            ResponseEntity.notFound().build();
+        }
+        return  ResponseEntity.ok(foundStudents);
+    }
+    @GetMapping("{studentId}/faculty")
+    public ResponseEntity<FacultyDTO> getFacultyOfStudentByStudentId(@PathVariable Long studentId){
+        FacultyDTO foundFaculty = studentService.getFacultyOfStudentByStudentId(studentId);
+        if(foundFaculty == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(foundFaculty);
     }
 }
