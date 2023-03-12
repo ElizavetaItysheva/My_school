@@ -45,24 +45,24 @@ public class HouseController {
         houseService.deleteFaculty(id);
         return ResponseEntity.ok().build();
     }
-    @GetMapping("{color}")
-    public ResponseEntity<Collection<FacultyDTO>> getFacultyByColor( @PathVariable String color){
+    @GetMapping("/color")
+    public ResponseEntity<Collection<FacultyDTO>> getFacultyByColor( @RequestParam String color){
         Collection<FacultyDTO> foundFaculties = houseService.getFacultyByColor(color);
         if(foundFaculties == null){
             ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(foundFaculties);
     }
-    @GetMapping("{name}")
-    public ResponseEntity<FacultyDTO> getFacultyByName(@PathVariable String name){
+    @GetMapping("/faculty")
+    public ResponseEntity<FacultyDTO> getFacultyByName(@RequestParam String name){
         FacultyDTO foundFaculty = houseService.getFacultyByName(name);
         if(foundFaculty == null){
             ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(foundFaculty);
     }
-    @GetMapping("{facultyId}")
-    public ResponseEntity<Collection<StudentDTO>> getStudentsByIdOfFaculty(@PathVariable Long facultyId){
+    @GetMapping("/facultyStudents")
+    public ResponseEntity<Collection<StudentDTO>> getStudentsByIdOfFaculty(@RequestParam Long facultyId){
         Collection<StudentDTO> founded = houseService.getStudentsByIdOfFaculty(facultyId);
         if(founded == null){
             ResponseEntity.notFound().build();

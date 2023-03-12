@@ -46,15 +46,15 @@ public class StudentController {
         studentService.deleteStudent(id);
         return ResponseEntity.ok().build();
     }
-    @GetMapping("{age}")
-    public ResponseEntity<Collection<StudentDTO>> getStudentsByAge( @PathVariable Long age){
+    @GetMapping("/age")
+    public ResponseEntity<Collection<StudentDTO>> getStudentsByAge( @RequestParam Long age){
         Collection<StudentDTO> foundStudents = studentService.getStudentsByAge(age);
         if(foundStudents == null){
             ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(foundStudents);
     }
-    @GetMapping
+    @GetMapping("/betweenAge")
     public  ResponseEntity<Collection<StudentDTO>> getStudentsByAgeBetween(@RequestParam Long start, Long end){
         Collection<StudentDTO> foundStudents = studentService.getStudentsByAgeBetween(start, end);
         if(foundStudents == null){
