@@ -1,20 +1,32 @@
 package ru.hogwarts.school.model;
+import javax.persistence.*;
 import java.util.Objects;
-
+@Entity
 public class Student {
-
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private int age;
+    private Long age;
+    @ManyToOne
+  //  @JoinColumn(name = "faculty_id") оно само оказывается создает и привязывает колонку!
+    private  Faculty faculty;
 
     public Student() {
     }
 
-    public Student( Long id, String name, int age ) {
+    public Student( Long id, String name, Long age ) {
         this.id = id;
         this.name = name;
         this.age = age;
+    }
+
+    public Faculty getFaculty() {
+        return faculty;
+    }
+
+    public void setFaculty( Faculty faculty ) {
+        this.faculty = faculty;
     }
 
     public Long getId() {
@@ -33,11 +45,11 @@ public class Student {
         this.name = name;
     }
 
-    public int getAge() {
+    public Long getAge() {
         return age;
     }
 
-    public void setAge( int age ) {
+    public void setAge( Long age ) {
         this.age = age;
     }
 
